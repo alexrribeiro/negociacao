@@ -1,7 +1,13 @@
 export class View {
     constructor(seletor, escapar) {
         this.escapar = false;
-        this.elemento = document.querySelector(seletor);
+        const elemento = document.querySelector(seletor);
+        if (elemento) {
+            this.elemento = elemento;
+        }
+        else {
+            throw Error(`Seletor ${seletor} não existe no DOM. Verifique.`);
+        }
         if (escapar) {
             this.escapar = escapar;
         }
@@ -9,7 +15,7 @@ export class View {
     update(model) {
         let template = this.template(model);
         if (this.escapar) {
-            template = template.replace(/<script>[\s\S]*?<\/script>/, ''); // Remove scripts que possam ser colocados no código
+            template = template.replace(/<script>[\s\S]*?<\/script>/, '');
         }
         this.elemento.innerHTML = template;
     }
